@@ -1,0 +1,15 @@
+---
+- name: add redirect
+  template:
+    dest: /etc/nginx/sites-available/{{ item.hostname }}{% if item.port is defined %}.{{ item.port }}{% endif %}.redirect.conf
+    src: redirect.conf.jinja2
+  with_items: redirects
+  notify: reload nginx
+
+- name: activate redirect
+  file:
+    src: /etc/nginx/sites-available/{{ item.hostname }}{% if item.port is defined %}.{{ item.port }}{% endif %}.redirect.conf
+    dest: /etc/nginx/sites-enabled/{{ item.hostname }}{% if item.port is defined %}.{{ item.port }}{% endif %}.redirect.conf
+    state: link
+  with_items: redirects
+  notify: reload nginx

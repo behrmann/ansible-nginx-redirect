@@ -1,0 +1,3 @@
+---
+- src: https://github.com/yaegashi/ansible-role-blockinfile.git
+  name: blockinfile
