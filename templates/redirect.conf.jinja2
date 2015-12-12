@@ -2,15 +2,15 @@ server {
   {% if item.port is defined %}
     listen {{ item.port }};
   {% endif %}
-    server_name {{ redirect.hostname }};
+    server_name {{ item.hostname }};
     {% if item.target is mapping %}
       {% for location, target in item.target.iteritems() %}
       location {{ location }} {
-        return {{ 302 if item.permanent else 301 }} {{ target }};
+        return {{ 302 if 'permanent' in item and item.permanent else 301 }} {{ target }};
       }
       {% endfor %}
     {% else %}
-    return {{ 302 if item.permanent else 301 }} {{ item.target }};
+    return {{ 302 if 'permanent' in item and item.permanent else 301 }} {{ item.target }};
     {% endif %}
 
   }
